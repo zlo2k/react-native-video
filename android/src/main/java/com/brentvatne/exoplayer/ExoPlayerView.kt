@@ -1,9 +1,12 @@
 package com.brentvatne.exoplayer
 
+import android.annotation.SuppressLint
+import com.brentvatne.react.R;
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import android.util.Xml
 import android.view.View
 import android.view.View.MeasureSpec
 import android.widget.FrameLayout
@@ -36,7 +39,16 @@ class ExoPlayerView @JvmOverloads constructor(context: Context, attrs: Attribute
         visibility = View.GONE
     }
 
-    private val playerView = PlayerView(context).apply {
+    @SuppressLint("ResourceType")
+    val xmlAttributes: AttributeSet? = context.resources.getXml(R.layout.player_view).let {
+        try {
+            it.next()
+            it.nextTag()
+        } catch (e: Exception) {}
+        Xml.asAttributeSet(it)
+    }
+
+    private val playerView = PlayerView(context, xmlAttributes).apply {
         layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
         setShutterBackgroundColor(Color.TRANSPARENT)
         useController = true
